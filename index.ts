@@ -1,4 +1,3 @@
-import { Options as requestOptions } from 'request'
 import Plugin, { tools, AppClient } from '../../plugin'
 
 class Coin extends Plugin {
@@ -7,7 +6,7 @@ class Coin extends Plugin {
   }
   public name = '兑换硬币'
   public description = '将银瓜子兑换成硬币'
-  public version = '0.0.1'
+  public version = '0.0.2'
   public author = 'lzghzr'
   /**
    * 任务表
@@ -46,10 +45,10 @@ class Coin extends Plugin {
   private _silver2coin(users: Map<string, User>) {
     users.forEach(async (user, uid) => {
       if (this._silver2coinList.get(uid) || !user.userData['silver2coin']) return
-      const exchange: requestOptions = {
+      const exchange: XHRoptions = {
         method: 'POST',
-        uri: `https://api.live.bilibili.com/AppExchange/silver2coin?${AppClient.signQueryBase(user.tokenQuery)}`,
-        json: true,
+        url: `https://api.live.bilibili.com/AppExchange/silver2coin?${AppClient.signQueryBase(user.tokenQuery)}`,
+        responseType:'json',
         headers: user.headers
       }
       const silver2coin = await tools.XHR<silver2coin>(exchange, 'Android')
